@@ -14,5 +14,9 @@ func main() {
 		firstParam = "--"
 	}
 
+	if firstParam == "START" {
+		fmt.Println("começou")
+	}
+
 	fmt.Println(firstParam)
 }
