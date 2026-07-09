@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 var firstParam string
@@ -18,46 +19,44 @@ func main() {
 	}
 
 	switch firstParam {
-	case "tmux":
-		cmd := exec.Command("tmux", "new", "-d", "-s", "minecraft", "'/opt/minecraft/MBC-Server/ServerStart.sh'")
-		cmd.Dir = "/opt/minecraft/MBC-Server/"
-
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-
 	case "start":
-		//fmt.Println("COMEÇOU")
-		//cmd := exec.Command("./ServerStart.sh")
-		cmd := exec.Command("tmux new-session -d -s mysession './ServerStart.sh'")
+		// Starts a new TMUX session running the server start shell
+		cmd := exec.Command("tmux", "new", "-d", "-s", "minecraft_tmux", "'/opt/minecraft/MBC-Server/ServerStart.sh'")
 		cmd.Dir = "/opt/minecraft/MBC-Server/"
 
-		// 2. Connect the command's outputs directly to your terminal
+		/*cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+		cmd.Stderr = os.Stderr*/
 
-		fmt.Println(cmd.Args)
-
-		// 3. Execute the script and wait for it to finish
 		err := cmd.Run()
 		if err != nil {
 			log.Fatalf("Script failed to run: %v", err)
 		}
 
 		fmt.Println("Script executed successfully!")
-
 	case "stop":
+
 		fmt.Println("PAROU")
 	case "restart":
 		fmt.Println("RESTART")
 	case "status":
-		fmt.Println("STATUS")
+		// First checks if there is any tmux session running
+		//cmd := exec.Command("tmux", "ls", "|", "grep", "'minecraft'", "-c")
+		test, err := exec.Command("tmux", "ls").Output()
+
+		/*err = cmd.Run()*/
+		if err != nil {
+			log.Fatalf("STATUS - Script failed to run: %v", err)
+		}
+
+		/*cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr*/
+
+		fmt.Println(string(test))
+		fmt.Println(strings.Contains(string(test), "minecraft_tmux"))
+
 	}
 
-	fmt.Println(firstParam)
+	//fmt.Println(firstParam)
 }
