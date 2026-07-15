@@ -1,8 +1,8 @@
 package main
 
 import (
-	gameservermgr "example/Go-CLI-Manager/gameServerMgr"
-	"example/Go-CLI-Manager/util"
+	gameservermgr "example/Go-CLI-Manager/gameServerManager/gameServerMgr"
+	"example/Go-CLI-Manager/gameServerManager/util"
 	"fmt"
 	"log"
 	"os"

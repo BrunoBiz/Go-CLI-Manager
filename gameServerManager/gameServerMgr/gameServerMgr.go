@@ -2,7 +2,7 @@ package gameservermgr
 
 import (
 	"errors"
-	"example/Go-CLI-Manager/util"
+	"example/Go-CLI-Manager/gameServerManager/util"
 	"os/exec"
 	"strings"
 )
