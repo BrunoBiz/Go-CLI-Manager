@@ -24,5 +24,9 @@ func main() {
 	}
 
 	gameServer := gameservermgr.NewGameServer(config)
-	fmt.Println(gameServer.OptionSwitch(firstParam).Message)
+	returnValue := gameServer.OptionSwitch(firstParam)
+
+	returnValue.PrintError()
+	returnValue.PrintMessage()
+
 }

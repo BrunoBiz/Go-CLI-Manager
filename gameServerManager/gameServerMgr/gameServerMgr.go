@@ -3,6 +3,7 @@ package gameservermgr
 import (
 	"errors"
 	"example/Go-CLI-Manager/gameServerManager/util"
+	"fmt"
 	"os/exec"
 	"strings"
 )
@@ -17,8 +18,18 @@ type ReturnValue struct {
 	option  string
 	valor   int
 	ativo   bool
-	Message string
+	message string
 	err     error
+}
+
+func (returnValue *ReturnValue) PrintMessage() {
+	fmt.Println("GSM - MENSAGEM: " + returnValue.message)
+}
+
+func (returnValue *ReturnValue) PrintError() {
+	if returnValue.err != nil {
+		fmt.Println("GSM - ERRO: " + returnValue.err.Error())
+	}
 }
 
 func newReturnValue(option string, valor int, ativo bool, message string, err error) ReturnValue {
@@ -26,7 +37,7 @@ func newReturnValue(option string, valor int, ativo bool, message string, err er
 		option:  option,
 		valor:   valor,
 		ativo:   ativo,
-		Message: message, // TODO - Maybe change back to private
+		message: message,
 		err:     err,
 	}
 }

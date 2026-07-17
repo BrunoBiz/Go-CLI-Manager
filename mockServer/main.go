@@ -1,4 +1,4 @@
-package mockserver
+package main
 
 import (
 	"fmt"
@@ -6,16 +6,16 @@ import (
 )
 
 func main() {
-	fmt.Println("hello there")
+	fmt.Print("MST - MAIN")
 
 	if len(os.Args) > 1 {
 		firstParam := os.Args[1]
 
 		if firstParam == "start" {
-			fmt.Println("START")
+			fmt.Println("MST - STARTED")
 		}
 	} else {
-		fmt.Println("ERR") // TODO - switch Log.fatal to errors
+		fmt.Println("MST - ERR") // TODO - switch Log.fatal to errors
 		return
 	}
 }
