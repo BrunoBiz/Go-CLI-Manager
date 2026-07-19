@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-var firstParam string
-
 func main() {
 	config, err := util.LoadConfig(".")
 	if err != nil {
@@ -17,16 +15,13 @@ func main() {
 	}
 
 	if len(os.Args) > 1 {
-		firstParam = os.Args[1]
+		gameServer := gameservermgr.NewGameServer(config)
+		returnValue := gameServer.OptionSwitch(os.Args[1])
+
+		returnValue.PrintError()
+		returnValue.PrintMessage()
 	} else {
 		fmt.Println("ERR") // TODO - switch Log.fatal to errors
 		return
 	}
-
-	gameServer := gameservermgr.NewGameServer(config)
-	returnValue := gameServer.OptionSwitch(firstParam)
-
-	returnValue.PrintError()
-	returnValue.PrintMessage()
-
 }

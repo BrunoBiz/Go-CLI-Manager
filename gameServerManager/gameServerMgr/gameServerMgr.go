@@ -3,7 +3,7 @@ package gameservermgr
 import (
 	"errors"
 	"example/Go-CLI-Manager/gameServerManager/util"
-	"fmt"
+	"log/slog"
 	"os/exec"
 	"strings"
 )
@@ -23,12 +23,12 @@ type ReturnValue struct {
 }
 
 func (returnValue *ReturnValue) PrintMessage() {
-	fmt.Println("GSM - MENSAGEM: " + returnValue.message)
+	slog.Info("GSM - MENSAGEM: " + returnValue.message)
 }
 
 func (returnValue *ReturnValue) PrintError() {
 	if returnValue.err != nil {
-		fmt.Println("GSM - ERRO: " + returnValue.err.Error())
+		slog.Error("GSM - ERRO: " + returnValue.err.Error())
 	}
 }
 
@@ -73,9 +73,14 @@ func (gameServer *GameServer) start() ReturnValue {
 	cmd.Dir = gameServer.gameServerDir
 	err := cmd.Run()
 
+	slog.Info("Comando executado: " + cmd.String())
+	slog.Info("Diretorio: " + cmd.Dir)
+
 	if err != nil {
+		slog.Info("FAILED TO START")
 		return newReturnValue("start", 0, false, "FAILED TO START", err)
 	} else {
+		slog.Info("STARTED")
 		return newReturnValue("start", 0, true, "STARTED", err)
 	}
 }
