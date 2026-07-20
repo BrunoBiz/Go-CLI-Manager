@@ -2,7 +2,8 @@
 $env:GOOS = "linux"
 $env:GOARCH = "amd64"
 
-$deployIP = "192.168.18.137"
+$deployIP = "192.168.18.137"  # Test-server
+#$deployIP = "192.168.18.126" # Minecraft
 
 go build -C ./gameserverManager -o ../gameserver
 go build -C ./mockServer -o ../mockServerTest
