@@ -86,6 +86,14 @@ func (gameServer *GameServer) start() ReturnValue {
 }
 
 func (gameServer *GameServer) stop() ReturnValue {
+
+	// tmux send-keys -t minecraft_tmux "list" ENTER
+	_, err := exec.Command("tmux", "send-keys", "-t", gameServer.tmuxSessionName, "shutdown").Output()
+
+	if err != nil {
+		return newReturnValue("stop", 0, false, "shutdown - Script failed to run", err)
+	}
+
 	return newReturnValue("", 0, false, "", nil)
 }
 
