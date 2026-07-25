@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	config, err := util.LoadConfig(".")
+	config, err := util.LoadConfig("/opt/")
 	if err != nil {
 		log.Fatal("cannot load from config: ", err) // TODO - switch Log.fatal to errors
 	}

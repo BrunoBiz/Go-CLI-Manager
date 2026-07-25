@@ -14,7 +14,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Deploy to server - app
-scp .\gameserver root@[$deployIP]:/tmp/gameserver
+scp .\gameserver root@[$deployIP]:/opt/gameserver
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Copy failed - .\gameserver"
@@ -22,7 +22,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Deploy to server - env
-scp .\mgr.env root@[$deployIP]:/tmp/mgr.env
+scp .\mgr.env root@[$deployIP]:/opt/mgr.env
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Copy failed - \mgr.env"
@@ -38,7 +38,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # CHMOD both files
-ssh "root@$deployIP" "chmod +x /tmp/gameserver; chmod +x /opt/mockServerTest"
+ssh "root@$deployIP" "chmod +x /opt/gameserver; chmod +x /opt/mockServerTest"
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "SSH Failed - CHMOD."

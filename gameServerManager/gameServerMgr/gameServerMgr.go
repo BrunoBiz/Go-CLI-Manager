@@ -21,12 +21,12 @@ type ReturnValue struct {
 }
 
 func (returnValue *ReturnValue) PrintMessage() {
-	slog.Info("GSM - MENSAGEM: " + returnValue.message)
+	slog.Info("GSM - MESSAGE: " + returnValue.message)
 }
 
 func (returnValue *ReturnValue) PrintError() {
 	if returnValue.err != nil {
-		slog.Error("GSM - ERRO: " + returnValue.err.Error())
+		slog.Error("GSM - ERROR: " + returnValue.err.Error())
 	}
 }
 
@@ -62,5 +62,5 @@ func (gameServer *GameServer) OptionSwitch(option string) ReturnValue {
 		return gameServer.status()
 	}
 
-	return newReturnValue("INVALIDO", 0, false, "OPCAO INVALIDA/NULA/VAZIA", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
+	return newReturnValue("INVALID", 0, false, "OPCAO INVALIDA/NULA/VAZIA", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
 }
