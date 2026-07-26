@@ -1,7 +1,6 @@
 package gameservermgr
 
 import (
-	"log/slog"
 	"os/exec"
 	"strings"
 )
@@ -16,18 +15,15 @@ func (gameServer *GameServer) status() ReturnValue {
 	cmd := exec.Command("tmux", "ls")
 	tmux_session, err := cmd.Output()
 
-	slog.Info("Comando executado: " + cmd.String())
-	slog.Info("Retorno comando: " + string(tmux_session))
-
 	if err != nil {
-		return newReturnValue("status", 0, false, "tmux ls - Script failed to run", err)
+		return newReturnValue("status", cmd.String(), string(tmux_session), false, "tmux ls - Script failed to run", err)
 	}
 
 	if strings.Contains(string(tmux_session), gameServer.tmuxSessionName) {
 		// tmux session exists
-		return newReturnValue("status", 1, true, "Server running", nil)
+		return newReturnValue("status", cmd.String(), string(tmux_session), true, "Server running", nil)
 	} else {
 		// tmux does not exists
-		return newReturnValue("status", 0, false, "Server offline", nil)
+		return newReturnValue("status", cmd.String(), string(tmux_session), true, "Server offline", nil)
 	}
 }

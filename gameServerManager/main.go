@@ -20,6 +20,8 @@ func main() {
 
 		returnValue.PrintError()
 		returnValue.PrintMessage()
+		returnValue.PrintCommand()
+		returnValue.PrintCommandResult()
 	} else {
 		fmt.Println("ERR") // TODO - switch Log.fatal to errors
 		return
