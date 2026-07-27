@@ -21,17 +21,25 @@ func NewGameServer(config util.Config) *GameServer {
 	return gameServer
 }
 
-func (gameServer *GameServer) OptionSwitch(option string) ReturnValue {
+func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) ReturnValue {
+	var returnSwitch ReturnValue
+
 	switch option {
 	case "start":
-		return gameServer.start()
+		returnSwitch = gameServer.start()
 	case "stop":
-		return gameServer.stop()
+		returnSwitch = gameServer.stop()
 	case "restart":
-		return gameServer.restart()
+		returnSwitch = gameServer.restart()
 	case "status":
-		return gameServer.status()
+		returnSwitch = gameServer.status()
+	default:
+		returnSwitch = newReturnValue("INVALID", option, "", false, "INVALID/NIL/EMPTY OPTION", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
 	}
 
-	return newReturnValue("INVALID", option, "", false, "INVALID/NIL/EMPTY OPTION", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
+	if printLogs {
+		returnSwitch.PrintLogs()
+	}
+
+	return returnSwitch
 }

@@ -24,6 +24,6 @@ func (gameServer *GameServer) status() ReturnValue {
 		return newReturnValue("status", cmd.String(), string(tmux_session), true, "Server running", nil)
 	} else {
 		// tmux does not exists
-		return newReturnValue("status", cmd.String(), string(tmux_session), true, "Server offline", nil)
+		return newReturnValue("status", cmd.String(), string(tmux_session), false, "Server offline", nil)
 	}
 }

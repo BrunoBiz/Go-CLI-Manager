@@ -12,5 +12,5 @@ func (gameServer *GameServer) stop() ReturnValue {
 		return newReturnValue("stop", cmd.String(), string(tmux_sd), false, "shutdown - Script failed to run", err)
 	}
 
-	return newReturnValue("stop", cmd.String(), string(tmux_sd), false, "STOPED", nil)
+	return newReturnValue("stop", cmd.String(), string(tmux_sd), true, "STOPED", nil)
 }

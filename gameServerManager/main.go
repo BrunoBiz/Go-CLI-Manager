@@ -16,12 +16,7 @@ func main() {
 
 	if len(os.Args) > 1 {
 		gameServer := gameservermgr.NewGameServer(config)
-		returnValue := gameServer.OptionSwitch(os.Args[1])
-
-		returnValue.PrintError()
-		returnValue.PrintMessage()
-		returnValue.PrintCommand()
-		returnValue.PrintCommandResult()
+		gameServer.OptionSwitch(os.Args[1], true)
 	} else {
 		fmt.Println("ERR") // TODO - switch Log.fatal to errors
 		return

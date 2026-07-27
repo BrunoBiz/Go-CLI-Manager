@@ -22,7 +22,7 @@ func main() {
 
 		if input == "shutdown" {
 			fmt.Println("MST - SERVER STOPPING")
-			time.Sleep(3 * time.Second)
+			time.Sleep(15 * time.Second)
 			break
 		}
 	}

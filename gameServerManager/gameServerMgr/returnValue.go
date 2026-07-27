@@ -1,36 +1,37 @@
 package gameservermgr
 
-import "log/slog"
+import (
+	"fmt"
+	"log/slog"
+	"strconv"
+	"strings"
+)
 
 type ReturnValue struct {
 	option        string
 	command       string
 	commandResult string
-	success       bool
+	success       bool // TODO - might need to refactor, since err != nil is already a success value, in the STATUS option will return TRUE if server running
 	message       string
 	err           error
 }
 
-func (returnValue *ReturnValue) PrintMessage() {
-	slog.Info("GSM - MESSAGE: " + returnValue.message)
-}
+func (returnValue *ReturnValue) PrintLogs() {
+	slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - MESSAGE: " + returnValue.message)
+	slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - SUCCESS: " + strconv.FormatBool(returnValue.success))
 
-func (returnValue *ReturnValue) PrintError() {
 	if returnValue.err != nil {
-		slog.Error("GSM - ERROR: " + returnValue.err.Error())
+		slog.Error("GSM - " + strings.ToUpper(returnValue.option) + " - ERROR: " + returnValue.err.Error())
 	}
-}
 
-func (returnValue *ReturnValue) PrintCommand() {
 	if returnValue.command != "" {
-		slog.Info("GSM - COMMAND: " + returnValue.command)
+		slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - COMMAND: " + returnValue.command)
 	}
-}
 
-func (returnValue *ReturnValue) PrintCommandResult() {
 	if returnValue.commandResult != "" {
-		slog.Info("GSM - COMMAND RESULT: " + returnValue.commandResult)
+		slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - COMMAND RESULT: " + returnValue.commandResult)
 	}
+	fmt.Println()
 }
 
 func newReturnValue(option string, command string, commandResult string, success bool, message string, err error) ReturnValue {

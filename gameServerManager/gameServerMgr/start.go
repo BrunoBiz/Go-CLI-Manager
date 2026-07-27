@@ -1,7 +1,6 @@
 package gameservermgr
 
 import (
-	"log/slog"
 	"os/exec"
 )
 
@@ -12,10 +11,8 @@ func (gameServer *GameServer) start() ReturnValue {
 	tmux_start, err := cmd.Output()
 
 	if err != nil { // TODO - Refactor -> remove IF
-		slog.Info("FAILED TO START")
 		return newReturnValue("start", cmd.String(), string(tmux_start), false, "FAILED TO START", err)
 	} else {
-		slog.Info("STARTED")
 		return newReturnValue("start", cmd.String(), string(tmux_start), true, "STARTED", err)
 	}
 }
