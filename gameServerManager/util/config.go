@@ -7,6 +7,7 @@ type Config struct {
 	TMUXSessionName   string `mapstructure:"TMUX_SESSION_NAME"`
 	GameStartFilePath string `mapstructure:"GAME_START_PATH"`
 	GameServerDir     string `mapstructure:"GAME_DIR"`
+	ServerStopTimeout int    `mapstructure:"SERVER_STOP_TIMEOUT"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

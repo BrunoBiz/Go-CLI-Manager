@@ -6,16 +6,18 @@ import (
 )
 
 type GameServer struct {
-	tmuxSessionName string
-	startFilePath   string
-	gameServerDir   string
+	tmuxSessionName   string
+	startFilePath     string
+	gameServerDir     string
+	stopServerTimeOut int
 }
 
 func NewGameServer(config util.Config) *GameServer {
 	gameServer := &GameServer{
-		tmuxSessionName: config.TMUXSessionName,
-		startFilePath:   config.GameStartFilePath,
-		gameServerDir:   config.GameServerDir,
+		tmuxSessionName:   config.TMUXSessionName,
+		startFilePath:     config.GameStartFilePath,
+		gameServerDir:     config.GameServerDir,
+		stopServerTimeOut: config.ServerStopTimeout,
 	}
 
 	return gameServer

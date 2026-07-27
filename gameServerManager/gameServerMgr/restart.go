@@ -1,5 +1,10 @@
 package gameservermgr
 
+import (
+	"fmt"
+	"time"
+)
+
 func (gameServer *GameServer) restart() ReturnValue {
 	// First checks if the server is running
 	returnStatus := gameServer.OptionSwitch("status", true)
@@ -8,8 +13,25 @@ func (gameServer *GameServer) restart() ReturnValue {
 	if returnStatus.success {
 		returnStop := gameServer.OptionSwitch("stop", true)
 
-		if !returnStop.success {
+		if !returnStop.success { // Cant stop server
 			return returnStop
+		} else { // TODO - needs more testing
+			// Waits until the server is offline
+			t2 := time.Now().Add(300 * time.Second)
+			for {
+
+				if !gameServer.OptionSwitch("status", true).success {
+					fmt.Println("PARADO") // TODO - CLEAR
+					break
+				}
+
+				if time.Now().After(t2) {
+					fmt.Println("DEPOIS") // TODO - CLEAR
+					break
+				}
+
+				time.Sleep(5 * time.Second)
+			}
 		}
 	}
 
