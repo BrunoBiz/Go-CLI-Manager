@@ -18,17 +18,17 @@ func (gameServer *GameServer) status() ReturnValue {
 	if err != nil {
 		if strings.Contains(string(tmux_session), "no server running") {
 			// If there is no server running, even tho it returns an error, will not handle it as such
-			return newReturnValue("status", cmd.String(), string(tmux_session), false, "No server running", nil)
+			return newReturnValue("status", cmd.String(), string(tmux_session), true, false, "No server running", nil)
 		} else {
-			return newReturnValue("status", cmd.String(), string(tmux_session), false, "tmux ls - Script failed to run", err)
+			return newReturnValue("status", cmd.String(), string(tmux_session), false, false, "tmux ls - Script failed to run", err)
 		}
 	}
 
-	if strings.Contains(string(tmux_session), gameServer.tmuxSessionName) {
+	if strings.Contains(string(tmux_session), gameServer.config.TMUXSessionName) {
 		// tmux session exists
-		return newReturnValue("status", cmd.String(), string(tmux_session), true, "Server running", nil)
+		return newReturnValue("status", cmd.String(), string(tmux_session), true, true, "Server running", nil)
 	} else {
 		// tmux does not exists
-		return newReturnValue("status", cmd.String(), string(tmux_session), false, "Server offline", nil)
+		return newReturnValue("status", cmd.String(), string(tmux_session), true, false, "Server offline", nil)
 	}
 }

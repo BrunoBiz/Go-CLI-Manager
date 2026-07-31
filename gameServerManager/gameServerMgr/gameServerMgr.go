@@ -6,18 +6,12 @@ import (
 )
 
 type GameServer struct {
-	tmuxSessionName   string
-	startFilePath     string
-	gameServerDir     string
-	stopServerTimeOut int
+	config util.Config
 }
 
 func NewGameServer(config util.Config) *GameServer {
 	gameServer := &GameServer{
-		tmuxSessionName:   config.TMUXSessionName,
-		startFilePath:     config.GameStartFilePath,
-		gameServerDir:     config.GameServerDir,
-		stopServerTimeOut: config.ServerStopTimeout,
+		config: config,
 	}
 
 	return gameServer
@@ -36,7 +30,7 @@ func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) Return
 	case "status":
 		returnSwitch = gameServer.status()
 	default:
-		returnSwitch = newReturnValue("INVALID", option, "", false, "INVALID/NIL/EMPTY OPTION", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
+		returnSwitch = newReturnValue("INVALID", option, "", false, false, "INVALID/NIL/EMPTY OPTION", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
 	}
 
 	if printLogs {

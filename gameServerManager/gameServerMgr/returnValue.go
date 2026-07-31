@@ -11,6 +11,7 @@ type ReturnValue struct {
 	option        string
 	command       string
 	commandResult string
+	success       bool
 	serverOnline  bool // Only used by the status option -> stores if the server is On
 	message       string
 	err           error
@@ -18,6 +19,7 @@ type ReturnValue struct {
 
 func (returnValue *ReturnValue) PrintLogs() {
 	slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - MESSAGE: " + returnValue.message)
+	slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - SUCCESS: " + strconv.FormatBool(returnValue.success))
 	if returnValue.option == "status" {
 		slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - SERVER STATUS: " + strconv.FormatBool(returnValue.serverOnline))
 	}
@@ -36,11 +38,12 @@ func (returnValue *ReturnValue) PrintLogs() {
 	fmt.Println()
 }
 
-func newReturnValue(option string, command string, commandResult string, serverOnline bool, message string, err error) ReturnValue {
+func newReturnValue(option string, command string, commandResult string, success bool, serverOnline bool, message string, err error) ReturnValue {
 	return ReturnValue{
 		option:        option,
 		command:       command,
 		commandResult: commandResult,
+		success:       success,
 		serverOnline:  serverOnline,
 		message:       message,
 		err:           err,
