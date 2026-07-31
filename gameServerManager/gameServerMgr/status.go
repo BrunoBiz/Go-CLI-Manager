@@ -11,12 +11,17 @@ func (gameServer *GameServer) status() ReturnValue {
 		is frozen or an error may have ocurred and it will still return as ONLINE if the session is still on!
 	*/
 
-	// First checks if the tmux session exists
+	// Command to check if the tmux session exists
 	cmd := exec.Command("tmux", "ls")
-	tmux_session, err := cmd.Output()
+	tmux_session, err := cmd.CombinedOutput()
 
 	if err != nil {
-		return newReturnValue("status", cmd.String(), string(tmux_session), false, "tmux ls - Script failed to run", err)
+		if strings.Contains(string(tmux_session), "no server running") {
+			// If there is no server running, even tho it returns an error, will not handle it as such
+			return newReturnValue("status", cmd.String(), string(tmux_session), false, "No server running", nil)
+		} else {
+			return newReturnValue("status", cmd.String(), string(tmux_session), false, "tmux ls - Script failed to run", err)
+		}
 	}
 
 	if strings.Contains(string(tmux_session), gameServer.tmuxSessionName) {
