@@ -7,11 +7,11 @@ import (
 
 func (gameServer *GameServer) restart() ReturnValue {
 	// First checks if the server is running
-	returnStatus := gameServer.OptionSwitch("status", true)
-	var stopServerStatus ReturnValue
+	returnDetails := gameServer.OptionSwitch("details", true)
+	var stopServerDetails ReturnValue
 
 	// SERVER RUNNING -> Stops it
-	if returnStatus.serverOnline {
+	if returnDetails.serverOnline {
 		returnStop := gameServer.OptionSwitch("stop", true)
 
 		if !returnStop.success { // Cant stop server
@@ -20,8 +20,8 @@ func (gameServer *GameServer) restart() ReturnValue {
 			// Waits until the server is offline
 			timeOut := time.Now().Add(time.Duration(gameServer.config.ServerStopTimeout) * time.Second)
 			for {
-				stopServerStatus = gameServer.OptionSwitch("status", false)
-				if !stopServerStatus.serverOnline {
+				stopServerDetails = gameServer.OptionSwitch("details", false)
+				if !stopServerDetails.serverOnline {
 					// Server stopped
 					break
 				}
