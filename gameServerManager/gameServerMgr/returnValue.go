@@ -38,6 +38,33 @@ func (returnValue *ReturnValue) PrintLogs() {
 	fmt.Println()
 }
 
+func (returnValue *ReturnValue) PrintLogsJSON() {
+	var errMsg string
+	if returnValue.err != nil {
+		errMsg = returnValue.err.Error()
+	}
+
+	jsonFormattedLog := fmt.Sprintf(
+		`{
+			"option": %q,
+			"message": %q,
+			"success": %t,
+			"status": %t,
+			"error": %q,
+			"command": %q,
+			"commandResult": %q
+		}`,
+		returnValue.option,
+		returnValue.message,
+		returnValue.success,
+		returnValue.serverOnline,
+		errMsg,
+		returnValue.command,
+		strings.TrimSpace(returnValue.commandResult),
+	)
+	slog.Info(jsonFormattedLog)
+}
+
 func newReturnValue(option string, command string, commandResult string, success bool, serverOnline bool, message string, err error) ReturnValue {
 	return ReturnValue{
 		option:        option,
