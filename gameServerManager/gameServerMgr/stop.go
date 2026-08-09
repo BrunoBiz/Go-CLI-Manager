@@ -1,10 +1,19 @@
 package gameservermgr
 
 import (
+	"errors"
+	"fmt"
+	"log/slog"
 	"os/exec"
+	"time"
 )
 
 func (gameServer *GameServer) stop() ReturnValue {
+	var stopServerDetails ReturnValue
+
+	//exec.Command("echo", `"Stopping server..."`)
+	slog.Info("Stopping server...")
+
 	cmd := exec.Command("tmux", "send-keys", "-t", gameServer.config.TMUXSessionName, "shutdown", "ENTER")
 	tmux_sd, err := cmd.CombinedOutput()
 
@@ -12,5 +21,28 @@ func (gameServer *GameServer) stop() ReturnValue {
 		return newReturnValue("stop", cmd.String(), string(tmux_sd), false, false, "shutdown - Script failed to run", err)
 	}
 
-	return newReturnValue("stop", cmd.String(), string(tmux_sd), true, false, "Stopping server...", nil)
+	// max timeout wait
+	currentTime := time.Now()
+	timeOut := currentTime.Add(time.Duration(gameServer.config.ServerStopTimeout) * time.Second)
+
+	// Waits until the server is offline
+	for {
+		fmt.Printf("\rTime elapsed: %s", time.Since(currentTime).Round(time.Second))
+
+		stopServerDetails = gameServer.OptionSwitch("details", false)
+		if !stopServerDetails.serverOnline {
+			// Server stopped
+			fmt.Print("\n\n") // TODO - super ugly code
+			break
+		}
+
+		// Time out - server did not shutdown in time
+		if time.Now().After(timeOut) {
+			return newReturnValue("stop", "", "", false, false, "TIME OUT", errors.New("Timeout"))
+		}
+
+		time.Sleep(2 * time.Second) // TODO - might need to remove this
+	}
+
+	return newReturnValue("stop", cmd.String(), string(tmux_sd), true, false, "Server stopped", nil)
 }
