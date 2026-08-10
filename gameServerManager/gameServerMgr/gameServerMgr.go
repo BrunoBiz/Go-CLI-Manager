@@ -30,7 +30,7 @@ func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) Return
 	case "details":
 		returnSwitch = gameServer.details()
 	default:
-		returnSwitch = newReturnValue("INVALID", option, "", false, false, "INVALID/NIL/EMPTY OPTION", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
+		returnSwitch = newReturnValue("INVALID", option, "", false, false, "Invalid or empty option", errors.New("OPCAO INVALIDA/NULA/VAZIA\rOPCAO: "+option))
 	}
 
 	if printLogs {

@@ -27,7 +27,7 @@ func (gameServer *GameServer) stop() ReturnValue {
 
 	// Waits until the server is offline
 	for {
-		fmt.Printf("\rTime elapsed: %s", time.Since(currentTime).Round(time.Second))
+		fmt.Printf("\rTime elapsed: %s / %ds", time.Since(currentTime).Round(time.Second), gameServer.config.ServerStopTimeout)
 
 		stopServerDetails = gameServer.OptionSwitch("details", false)
 		if !stopServerDetails.serverOnline {
@@ -38,10 +38,10 @@ func (gameServer *GameServer) stop() ReturnValue {
 
 		// Time out - server did not shutdown in time
 		if time.Now().After(timeOut) {
-			return newReturnValue("stop", "", "", false, false, "TIME OUT", errors.New("Timeout"))
+			return newReturnValue("stop", "", "", false, false, "Server timed out", errors.New("Timeout"))
 		}
 
-		time.Sleep(2 * time.Second) // TODO - might need to remove this
+		time.Sleep(1 * time.Second) // TODO - might need to remove this
 	}
 
 	return newReturnValue("stop", cmd.String(), string(tmux_sd), true, false, "Server stopped", nil)

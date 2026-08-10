@@ -11,8 +11,8 @@ func (gameServer *GameServer) start() ReturnValue {
 	tmux_start, err := cmd.CombinedOutput()
 
 	if err != nil { // TODO - Refactor -> remove IF
-		return newReturnValue("start", cmd.String(), string(tmux_start), false, false, "FAILED TO START", err)
+		return newReturnValue("start", cmd.String(), string(tmux_start), false, false, "Failed to start server", err)
 	} else {
-		return newReturnValue("start", cmd.String(), string(tmux_start), true, false, "STARTED", err)
+		return newReturnValue("start", cmd.String(), string(tmux_start), true, false, "Server started successfully", err)
 	}
 }
