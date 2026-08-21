@@ -5,10 +5,10 @@ func (gameServer *GameServer) restart() ReturnValue {
 	returnDetails := gameServer.OptionSwitch("details", true)
 
 	// SERVER RUNNING -> Stops it
-	if returnDetails.serverOnline {
+	if returnDetails.ServerOnline {
 		returnStop := gameServer.OptionSwitch("stop", true)
 
-		if !returnStop.success { // Cant stop server
+		if !returnStop.Success { // Cant stop server
 			return returnStop
 		}
 	}

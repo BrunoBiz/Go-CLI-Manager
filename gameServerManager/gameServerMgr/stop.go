@@ -30,7 +30,7 @@ func (gameServer *GameServer) stop() ReturnValue {
 		fmt.Printf("\rTime elapsed: %s / %ds", time.Since(currentTime).Round(time.Second), gameServer.config.ServerStopTimeout)
 
 		stopServerDetails = gameServer.OptionSwitch("details", false)
-		if !stopServerDetails.serverOnline {
+		if !stopServerDetails.ServerOnline {
 			// Server stopped
 			fmt.Print("\n\n") // TODO - super ugly code
 			break

@@ -1,6 +1,7 @@
 package gameservermgr
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"strconv"
@@ -8,43 +9,43 @@ import (
 )
 
 type ReturnValue struct {
-	option        string
-	command       string
-	commandResult string
-	success       bool
-	serverOnline  bool // Only used by the details option -> stores if the server is On
-	message       string
-	err           error
+	Option        string
+	Command       string
+	CommandResult string
+	Success       bool
+	ServerOnline  bool // Only used by the details option -> stores if the server is On
+	Message       string
+	ErrMsg        string
 }
 
 func (returnValue *ReturnValue) PrintLogs() {
-	slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - MESSAGE: " + returnValue.message)
-	slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - SUCCESS: " + strconv.FormatBool(returnValue.success))
-	if returnValue.option == "details" {
-		slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - SERVER STATUS: " + strconv.FormatBool(returnValue.serverOnline))
+	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
+	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SUCCESS: " + strconv.FormatBool(returnValue.Success))
+	if returnValue.Option == "details" {
+		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SERVER STATUS: " + strconv.FormatBool(returnValue.ServerOnline))
 	}
 
-	if returnValue.err != nil {
-		slog.Error("GSM - " + strings.ToUpper(returnValue.option) + " - ERROR: " + returnValue.err.Error())
+	if returnValue.ErrMsg != "" {
+		slog.Error("GSM - " + strings.ToUpper(returnValue.Option) + " - ERROR: " + returnValue.ErrMsg)
 	}
 
-	if returnValue.command != "" {
-		slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - COMMAND: " + returnValue.command)
+	if returnValue.Command != "" {
+		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND: " + returnValue.Command)
 	}
 
-	if returnValue.commandResult != "" {
-		slog.Info("GSM - " + strings.ToUpper(returnValue.option) + " - COMMAND RESULT: " + returnValue.commandResult)
+	if returnValue.CommandResult != "" {
+		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND RESULT: " + returnValue.CommandResult)
 	}
 	fmt.Println()
 }
 
 func (returnValue *ReturnValue) PrintLogsJSON() {
-	var errMsg string
+	/*var errMsg string
 	if returnValue.err != nil {
 		errMsg = returnValue.err.Error()
-	}
+	}*/
 
-	jsonFormattedLog := fmt.Sprintf(
+	/*jsonFormattedLog := fmt.Sprintf(
 		`{
 			"option": %q,
 			"message": %q,
@@ -61,18 +62,29 @@ func (returnValue *ReturnValue) PrintLogsJSON() {
 		errMsg,
 		returnValue.command,
 		strings.TrimSpace(returnValue.commandResult),
-	)
-	slog.Info(jsonFormattedLog)
+	)*/
+	//slog.Info(jsonFormattedLog)
+
+	jsonFormattedLog, err := json.Marshal(returnValue)
+	if err != nil {
+		fmt.Println("err " + err.Error())
+	}
+	fmt.Println(string(jsonFormattedLog))
 }
 
 func newReturnValue(option string, command string, commandResult string, success bool, serverOnline bool, message string, err error) ReturnValue {
+	var errMsg string
+	if err != nil {
+		errMsg = err.Error()
+	}
+
 	return ReturnValue{
-		option:        option,
-		command:       command,
-		commandResult: commandResult,
-		success:       success,
-		serverOnline:  serverOnline,
-		message:       message,
-		err:           err,
+		Option:        option,
+		Command:       command,
+		CommandResult: commandResult,
+		Success:       success,
+		ServerOnline:  serverOnline,
+		Message:       message,
+		ErrMsg:        errMsg,
 	}
 }

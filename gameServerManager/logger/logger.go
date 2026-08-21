@@ -31,7 +31,9 @@ func LoadLogger(config util.Config) error {
 		return err
 	}
 
-	logger := slog.New(slog.NewJSONHandler(logFile, nil))
+	logger := slog.New(slog.NewTextHandler(logFile, &slog.HandlerOptions{
+		AddSource: true, // Adds source=main.go:15 to the log line
+	}))
 	slog.SetDefault(logger)
 
 	return nil
