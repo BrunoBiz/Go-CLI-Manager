@@ -31,6 +31,8 @@ func LoadLogger(config util.Config) error {
 		return err
 	}
 
+	//mWriter := io.MultiWriter(logFile, os.Stdout)
+
 	logger := slog.New(slog.NewTextHandler(logFile, &slog.HandlerOptions{
 		AddSource: true, // Adds source=main.go:15 to the log line
 	}))
