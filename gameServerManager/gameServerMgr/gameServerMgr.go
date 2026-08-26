@@ -34,7 +34,7 @@ func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) Return
 	}
 
 	if printLogs {
-		//returnSwitch.PrintLogs()
+		returnSwitch.PrintLogs()
 		returnSwitch.PrintLogsJSON()
 	}
 

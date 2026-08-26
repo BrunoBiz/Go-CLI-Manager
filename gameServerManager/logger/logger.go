@@ -3,6 +3,7 @@ package logger
 import (
 	"example/Go-CLI-Manager/gameServerManager/util"
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -31,10 +32,10 @@ func LoadLogger(config util.Config) error {
 		return err
 	}
 
-	//mWriter := io.MultiWriter(logFile, os.Stdout)
+	mWriter := io.MultiWriter(logFile, os.Stdout)
 
-	logger := slog.New(slog.NewTextHandler(logFile, &slog.HandlerOptions{
-		AddSource: true, // Adds source=main.go:15 to the log line
+	logger := slog.New(slog.NewTextHandler(mWriter, &slog.HandlerOptions{
+		//AddSource: true, // Adds source=main.go:15 to the log line
 	}))
 	slog.SetDefault(logger)
 

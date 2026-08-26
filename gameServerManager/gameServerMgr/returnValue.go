@@ -19,7 +19,6 @@ type ReturnValue struct {
 }
 
 func (returnValue *ReturnValue) PrintLogs() {
-	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
 	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SUCCESS: " + strconv.FormatBool(returnValue.Success))
 	if returnValue.Option == "details" {
 		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SERVER STATUS: " + strconv.FormatBool(returnValue.ServerOnline))
@@ -36,6 +35,7 @@ func (returnValue *ReturnValue) PrintLogs() {
 	if returnValue.CommandResult != "" {
 		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND RESULT: " + returnValue.CommandResult)
 	}
+	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
 	fmt.Println()
 }
 
