@@ -3,7 +3,6 @@ package logger
 import (
 	"example/Go-CLI-Manager/gameServerManager/util"
 	"fmt"
-	"io"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -32,14 +31,20 @@ func LoadLogger(config util.Config) error {
 		return err
 	}
 
-	mWriter := io.MultiWriter(logFile, os.Stdout)
+	//mWriter := io.MultiWriter(logFile, os.Stdout)
 
-	logger := slog.New(slog.NewTextHandler(mWriter, &slog.HandlerOptions{
-		//AddSource: true, // Adds source=main.go:15 to the log line
-	}))
-	slog.SetDefault(logger)
+	// testing ---- One logger can have options different to the other
+	multi := slog.NewMultiHandler(slog.NewTextHandler(logFile, &slog.HandlerOptions{AddSource: true}), slog.NewTextHandler(os.Stdout, nil))
+	loggerMulti := slog.New(multi)
+	slog.SetDefault(loggerMulti)
 
 	return nil
+	// testing
+
+	/*logger := slog.New(slog.NewTextHandler(logFile, &slog.HandlerOptions{
+		//AddSource: true, // Adds source=main.go:15 to the log line
+	}))
+	slog.SetDefault(logger)*/
 }
 
 func checkDirectory() error {
