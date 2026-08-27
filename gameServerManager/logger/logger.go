@@ -31,20 +31,32 @@ func LoadLogger(config util.Config) error {
 		return err
 	}
 
-	//mWriter := io.MultiWriter(logFile, os.Stdout)
+	//mWriter := io.MultiWriter(logFile, os.Stdout) -> MultiWriter switched to MultiHandler
 
-	// testing ---- One logger can have options different to the other
-	multi := slog.NewMultiHandler(slog.NewTextHandler(logFile, &slog.HandlerOptions{AddSource: true}), slog.NewTextHandler(os.Stdout, nil))
-	loggerMulti := slog.New(multi)
-	slog.SetDefault(loggerMulti)
+	//lvl := new(slog.LevelVar)
+	//lvl.Set(16)
+
+	// Removes the time and level information from the logs printed to stdout
+	replaceWithoutTimeLevel := func(groups []string, a slog.Attr) slog.Attr {
+		if (a.Key == slog.TimeKey && len(groups) == 0) ||
+			(a.Key == slog.LevelKey && len(groups) == 0) {
+			return slog.Attr{}
+		}
+
+		if a.Key == slog.MessageKey && len(groups) == 0 {
+			return slog.Attr{Key: "", Value: a.Value} // TODO - does not work yet
+		}
+
+		return a
+	}
+
+	multiHandler := slog.NewMultiHandler(slog.NewTextHandler(
+		logFile, &slog.HandlerOptions{AddSource: true}), // Logs to the log file, has added source
+		slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: replaceWithoutTimeLevel}), // Logs to the stdout, does not print the current time and log level
+	)
+	slog.SetDefault(slog.New(multiHandler))
 
 	return nil
-	// testing
-
-	/*logger := slog.New(slog.NewTextHandler(logFile, &slog.HandlerOptions{
-		//AddSource: true, // Adds source=main.go:15 to the log line
-	}))
-	slog.SetDefault(logger)*/
 }
 
 func checkDirectory() error {

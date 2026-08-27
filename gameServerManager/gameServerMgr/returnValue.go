@@ -36,10 +36,13 @@ func (returnValue *ReturnValue) PrintLogs() {
 		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND RESULT: " + returnValue.CommandResult)
 	}
 	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
-	fmt.Println()
+	//fmt.Println()
 }
 
 func (returnValue *ReturnValue) PrintLogsJSON() {
+
+	// Currently not used - Opted for a more streamlined option, more compatible with LinuxGSM
+
 	jsonFormattedLog, err := json.Marshal(returnValue)
 	if err != nil {
 		fmt.Println("err " + err.Error())
