@@ -36,7 +36,7 @@ func LoadLogger(config util.Config) error {
 	//lvl := new(slog.LevelVar)
 	//lvl.Set(16)
 
-	// Removes the time and level information from the logs printed to stdout
+	// Removes the time and level information -> STDOUT
 	replaceWithoutTimeLevel := func(groups []string, a slog.Attr) slog.Attr {
 		if (a.Key == slog.TimeKey && len(groups) == 0) ||
 			(a.Key == slog.LevelKey && len(groups) == 0) {
@@ -44,11 +44,22 @@ func LoadLogger(config util.Config) error {
 		}
 
 		if a.Key == slog.MessageKey && len(groups) == 0 {
-			return slog.Attr{Key: "", Value: a.Value} // TODO - does not work yet
+			return slog.Attr{Key: "", Value: a.Value} // TODO - Still prints the "" in the stdout
 		}
 
 		return a
 	}
+
+	// DOES NOT WORK - Adds a /n at the end of every log
+	// Adds a blank line at the end of each log block -> LOG FILE
+	/*replaceWithBlankLine := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.MessageKey && len(groups) == 0 {
+			logBlank := a.Value.String() + "\n"
+			return slog.Attr{Key: a.Key, Value: slog.StringValue(logBlank)}
+		}
+
+		return a
+	}*/
 
 	multiHandler := slog.NewMultiHandler(slog.NewTextHandler(
 		logFile, &slog.HandlerOptions{AddSource: true}), // Logs to the log file, has added source

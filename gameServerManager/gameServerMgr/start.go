@@ -11,11 +11,13 @@ func (gameServer *GameServer) start() ReturnValue {
 	cmd.Dir = gameServer.config.GameServerDir
 	tmux_start, err := cmd.CombinedOutput()
 
-	if err != nil && strings.Contains(string(tmux_start), "duplicate session:") { // Server already running
+	// Server already running
+	if err != nil && strings.Contains(string(tmux_start), "duplicate session:") {
 		return newReturnValue("start", cmd.String(), string(tmux_start), false, true, "Server is already running", err)
 	}
 
-	if err != nil { // Any other error - Server failed to start
+	// Any other error - Server failed to start
+	if err != nil {
 		return newReturnValue("start", cmd.String(), string(tmux_start), false, false, "Unable to start", err)
 	}
 
