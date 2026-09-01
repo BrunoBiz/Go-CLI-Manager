@@ -21,7 +21,14 @@ type ReturnValue struct {
 func (returnValue *ReturnValue) PrintLogs() {
 	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SUCCESS: " + strconv.FormatBool(returnValue.Success))
 	if returnValue.Option == "details" {
-		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SERVER STATUS: " + strconv.FormatBool(returnValue.ServerOnline))
+		var serverStatus string
+		if returnValue.ServerOnline {
+			serverStatus = "STARTED"
+		} else {
+			serverStatus = "STOPPED"
+		}
+
+		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SERVER STATUS: " + serverStatus)
 	}
 
 	if returnValue.ErrMsg != "" {
@@ -36,7 +43,6 @@ func (returnValue *ReturnValue) PrintLogs() {
 		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND RESULT: " + returnValue.CommandResult)
 	}
 	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
-	//fmt.Println()
 }
 
 func (returnValue *ReturnValue) PrintLogsJSON() {
