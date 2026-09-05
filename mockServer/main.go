@@ -18,8 +18,6 @@ func main() {
 			continue
 		}
 
-		//fmt.Println(option)
-
 		if input == "shutdown" {
 			fmt.Println("MST - SERVER STOPPING")
 			time.Sleep(15 * time.Second)

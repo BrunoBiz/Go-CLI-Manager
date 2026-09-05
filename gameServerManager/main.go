@@ -9,16 +9,16 @@ import (
 )
 
 func main() {
-	config, err := util.LoadConfig("/opt/")
+	// Create/Load the log file and set as the default logger for SLOG
+	err := logger.LoadLogger()
 	if err != nil {
-		slog.Error("ERR - Cannot load from config: " + err.Error())
+		slog.Error("ERR - Cannot load/create log file: " + err.Error())
 		return
 	}
 
-	// Create/Load the log file and set as the default logger for SLOG
-	err = logger.LoadLogger(config)
+	config, err := util.LoadConfig("/opt/")
 	if err != nil {
-		slog.Error("ERR - Cannot load/create log file: " + err.Error())
+		slog.Error("ERR - Cannot load from config: " + err.Error())
 		return
 	}
 
