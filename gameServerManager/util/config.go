@@ -4,10 +4,11 @@ import "github.com/spf13/viper"
 
 // Stores all configs - Reads with VIPER
 type Config struct {
-	TMUXSessionName   string `mapstructure:"TMUX_SESSION_NAME"`
-	GameStartFilePath string `mapstructure:"GAME_START_PATH"`
-	GameServerDir     string `mapstructure:"GAME_DIR"`
-	ServerStopTimeout int    `mapstructure:"SERVER_STOP_TIMEOUT"`
+	TMUXSessionName        string `mapstructure:"TMUX_SESSION_NAME"`
+	GameStartFilePath      string `mapstructure:"GAME_START_PATH"`
+	GameServerDir          string `mapstructure:"GAME_DIR"`
+	ServerStopTimeout      int    `mapstructure:"SERVER_STOP_TIMEOUT"`
+	CustomShutdownSequence int    `mapstructure:"CUSTOM_SHUTDOWN_SEQUENCE"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

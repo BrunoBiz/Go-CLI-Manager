@@ -30,11 +30,6 @@ func LoadLogger() error {
 		return err
 	}
 
-	//mWriter := io.MultiWriter(logFile, os.Stdout) -> MultiWriter switched to MultiHandler
-
-	//lvl := new(slog.LevelVar)
-	//lvl.Set(16)
-
 	// Removes the time and level information -> STDOUT
 	replaceWithoutTimeLevel := func(groups []string, a slog.Attr) slog.Attr {
 		if (a.Key == slog.TimeKey && len(groups) == 0) ||

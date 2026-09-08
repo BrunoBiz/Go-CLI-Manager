@@ -16,7 +16,7 @@ func main() {
 		return
 	}
 
-	config, err := util.LoadConfig("/opt/")
+	config, err := util.LoadConfig("/home/gameserver")
 	if err != nil {
 		slog.Error("ERR - Cannot load from config: " + err.Error())
 		return
