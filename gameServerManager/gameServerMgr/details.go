@@ -13,22 +13,22 @@ func (gameServer *GameServer) details() ReturnValue {
 
 	// Command to check if the tmux session exists
 	cmd := exec.Command("tmux", "ls")
-	tmux_session, err := cmd.CombinedOutput()
+	tmuxSession, err := cmd.CombinedOutput()
 
 	if err != nil {
-		if strings.Contains(string(tmux_session), "no server running") {
+		if strings.Contains(string(tmuxSession), "no server running") {
 			// If there is no server running, even tho it returns an error, will not handle it as such
-			return newReturnValue("details", cmd.String(), string(tmux_session), true, false, "No server running", nil)
+			return newReturnValue("details", cmd.String(), string(tmuxSession), true, false, "No server running", nil)
 		} else {
-			return newReturnValue("details", cmd.String(), string(tmux_session), false, false, "tmux ls - Script failed to run", err)
+			return newReturnValue("details", cmd.String(), string(tmuxSession), false, false, "tmux ls - Script failed to run", err)
 		}
 	}
 
-	if strings.Contains(string(tmux_session), gameServer.config.TMUXSessionName) {
+	if strings.Contains(string(tmuxSession), gameServer.config.TMUXSessionName) {
 		// tmux session exists
-		return newReturnValue("details", cmd.String(), string(tmux_session), true, true, "Server running", nil)
+		return newReturnValue("details", cmd.String(), string(tmuxSession), true, true, "Server running", nil)
 	} else {
 		// tmux does not exists
-		return newReturnValue("details", cmd.String(), string(tmux_session), true, false, "Server offline", nil)
+		return newReturnValue("details", cmd.String(), string(tmuxSession), true, false, "Server offline", nil)
 	}
 }

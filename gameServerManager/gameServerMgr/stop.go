@@ -12,8 +12,8 @@ import (
 func (gameServer *GameServer) stop() ReturnValue {
 	var stopServerDetails ReturnValue
 	var err error
-	var cmd *exec.Cmd
-	var tmux_sd []byte
+	var cmd, cmdNCommand *exec.Cmd
+	var tmuxStop, tmuxCapturePane []byte
 
 	slog.Info("Stopping server...")
 
@@ -24,37 +24,60 @@ func (gameServer *GameServer) stop() ReturnValue {
 		1 - Shutdown command followed by a N(o) commnand
 	*/
 	if gameServer.config.CustomShutdownSequence == 0 {
+		slog.Debug("Shutdown - Sequence 0")
+
 		cmd = exec.Command("tmux", "send-keys", "-t", gameServer.config.TMUXSessionName, "shutdown", "ENTER")
-		tmux_sd, err = cmd.CombinedOutput()
+		tmuxStop, err = cmd.CombinedOutput()
 	}
 
 	if gameServer.config.CustomShutdownSequence == 1 {
+		slog.Debug("Shutdown - Sequence 1")
+
 		/*
 			After shutdown, server prompts user to restart automatically after 30s.
 			Need to send a 'N' to stop the auto-restart and keep the server off.
 
 		*/
 		cmd = exec.Command("tmux", "send-keys", "-t", gameServer.config.TMUXSessionName, "shutdown", "ENTER")
-		tmux_sd, err = cmd.CombinedOutput()
+		tmuxStop, err = cmd.CombinedOutput() // send-keys has no output, fire and forget
 
 		// Will need to read the stdout and wait here until 'Server will re-start *automatically* in less than 30 seconds...' shows up
-		// Other than that, all works fine
+		for {
+			// Captures the last 100 lines from the tmux terminal
+			cmd = exec.Command("tmux", "capture-pane", "-S", "-100", "-E", "-", "-p", "-t", gameServer.config.TMUXSessionName)
+			tmuxCapturePane, err = cmd.CombinedOutput()
 
-		cmd = exec.Command("tmux", "send-keys", "-t", gameServer.config.TMUXSessionName, "n", "ENTER")
+			if err != nil {
+				return newReturnValue("stop", cmd.String(), string(tmuxCapturePane), false, false, "shutdown - Script failed to run (0)", err)
+			}
 
+			if strings.Contains(string(tmuxCapturePane), "Server will re-start ") {
+				cmdNCommand = exec.Command("tmux", "send-keys", "-t", gameServer.config.TMUXSessionName, "n", "ENTER")
+				_, err = cmdNCommand.CombinedOutput()
+
+				if err != nil {
+					return newReturnValue("stop", cmdNCommand.String(), "", false, false, "shutdown - Script failed to run (1)", err)
+				}
+
+				break
+			}
+
+			time.Sleep(time.Second)
+		}
 	}
 
 	// Server is already stopped
-	if err != nil && strings.Contains(string(tmux_sd), "no server running on") {
-		return newReturnValue("stop", cmd.String(), string(tmux_sd), false, false, "Server is already stopped", err)
+	if err != nil && strings.Contains(string(tmuxStop), "no server running on") {
+		return newReturnValue("stop", cmd.String(), string(tmuxStop), false, false, "Server is already stopped", err)
 	}
 
 	// Any other error
 	if err != nil {
-		return newReturnValue("stop", cmd.String(), string(tmux_sd), false, false, "shutdown - Script failed to run", err)
+		return newReturnValue("stop", cmd.String(), string(tmuxStop), false, false, "shutdown - Script failed to run (2)", err)
 	}
 
 	// max timeout wait
+	slog.Debug("Max timeout")
 	currentTime := time.Now()
 	timeOut := currentTime.Add(time.Duration(gameServer.config.ServerStopTimeout) * time.Second)
 
@@ -74,8 +97,8 @@ func (gameServer *GameServer) stop() ReturnValue {
 			return newReturnValue("stop", "", "", false, false, "Server timed out", errors.New("Timeout"))
 		}
 
-		time.Sleep(1 * time.Second) // TODO - might need to remove this
+		time.Sleep(time.Second) // TODO - might need to remove this
 	}
 
-	return newReturnValue("stop", cmd.String(), string(tmux_sd), true, false, "Server stopped", nil)
+	return newReturnValue("stop", cmd.String(), string(tmuxStop), true, false, "Server stopped", nil)
 }
