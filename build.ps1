@@ -2,8 +2,8 @@
 $env:GOOS = "linux"
 $env:GOARCH = "amd64"
 
-#$deployIP = "192.168.18.137"  # Test-server
-$deployIP = "192.168.18.126" # Minecraft
+$deployIP = "192.168.18.137"  # Test-server
+#$deployIP = "192.168.18.126" # Minecraft
 
 go build -C ./gameserverManager -o ../gameserver
 go build -C ./mockServer -o ../mockServerTest
@@ -14,7 +14,6 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Deploy to server - app
-#scp .\gameserver root@[$deployIP]:/opt/gameserver
 scp .\gameserver root@[$deployIP]:/home/gameserver/gameserver 
 
 if ($LASTEXITCODE -ne 0) {
@@ -23,7 +22,6 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Deploy to server - env
-#scp .\mgr.env root@[$deployIP]:/opt/mgr.env
 scp .\mgr.env root@[$deployIP]:/home/gameserver/mgr.env
 
 if ($LASTEXITCODE -ne 0) {

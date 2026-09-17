@@ -1,11 +1,16 @@
 package gameservermgr
 
 import (
+	"context"
+	"example/Go-CLI-Manager/gameServerManager/logger"
+	"log/slog"
 	"os/exec"
 	"strings"
 )
 
 func (gameServer *GameServer) start() ReturnValue {
+	slog.Log(context.Background(), logger.LevelFile, "[GSM Start]")
+
 	// Starts a new TMUX session running the server start shell
 	cmd := exec.Command("tmux", "new", "-d", "-s", gameServer.config.TMUXSessionName, gameServer.config.GameStartFilePath)
 	cmd.Dir = gameServer.config.GameServerDir

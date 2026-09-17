@@ -1,8 +1,11 @@
 package gameservermgr
 
 import (
+	"context"
 	"errors"
+	"example/Go-CLI-Manager/gameServerManager/logger"
 	"example/Go-CLI-Manager/gameServerManager/util"
+	"log/slog"
 )
 
 type GameServer struct {
@@ -20,6 +23,8 @@ func NewGameServer(config util.Config) *GameServer {
 func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) ReturnValue {
 	var returnSwitch ReturnValue
 
+	slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Validade option - "+option)
+
 	switch option {
 	case "start":
 		returnSwitch = gameServer.start()
@@ -35,7 +40,6 @@ func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) Return
 
 	if printLogs {
 		returnSwitch.PrintLogs()
-		//returnSwitch.PrintLogsJSON()
 	}
 
 	return returnSwitch

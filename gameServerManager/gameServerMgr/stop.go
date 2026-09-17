@@ -1,15 +1,20 @@
 package gameservermgr
 
 import (
+	"context"
 	"errors"
+	"example/Go-CLI-Manager/gameServerManager/logger"
 	"fmt"
 	"log/slog"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 )
 
 func (gameServer *GameServer) stop() ReturnValue {
+	slog.Log(context.Background(), logger.LevelFile, "[GSM Stop]")
+
 	var stopServerDetails ReturnValue
 	var err error
 	var cmd, cmdNCommand *exec.Cmd
@@ -30,6 +35,7 @@ func (gameServer *GameServer) stop() ReturnValue {
 		tmuxStop, err = cmd.CombinedOutput()
 	}
 
+	slog.Log(context.Background(), logger.LevelFile, "[GSM Stop] - CustomShutdownSequence: "+strconv.Itoa(gameServer.config.CustomShutdownSequence))
 	if gameServer.config.CustomShutdownSequence == 1 {
 		slog.Debug("Shutdown - Sequence 1")
 

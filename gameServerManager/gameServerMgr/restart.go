@@ -1,6 +1,14 @@
 package gameservermgr
 
+import (
+	"context"
+	"example/Go-CLI-Manager/gameServerManager/logger"
+	"log/slog"
+)
+
 func (gameServer *GameServer) restart() ReturnValue {
+	slog.Log(context.Background(), logger.LevelFile, "[GSM Restart]")
+
 	// First checks if the server is running
 	returnDetails := gameServer.OptionSwitch("details", true)
 

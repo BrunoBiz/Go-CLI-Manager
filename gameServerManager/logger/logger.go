@@ -8,6 +8,25 @@ import (
 	"time"
 )
 
+/*
+	Slog log levels
+
+	File   -> Log levels -2 and above
+	Stdout -> Log levels 0 and above
+
+	const (
+		LevelDebug Level = -4
+		LevelFile  Level = -2 --> Custom - Any logs that need to be logged to the file, but not STDOUT
+		LevelInfo  Level = 0
+		LevelWarn  Level = 4
+		LevelError Level = 8
+	)
+*/
+
+const (
+	LevelFile = slog.Level(-2)
+)
+
 func LoadLogger() error {
 	//The 'Log' folder will always be in the root directory of GameServerManager
 	err := checkDirectory()
@@ -44,20 +63,9 @@ func LoadLogger() error {
 		return a
 	}
 
-	// DOES NOT WORK - Adds a /n at the end of every log
-	// Adds a blank line at the end of each log block -> LOG FILE
-	/*replaceWithBlankLine := func(groups []string, a slog.Attr) slog.Attr {
-		if a.Key == slog.MessageKey && len(groups) == 0 {
-			logBlank := a.Value.String() + "\n"
-			return slog.Attr{Key: a.Key, Value: slog.StringValue(logBlank)}
-		}
-
-		return a
-	}*/
-
-	multiHandler := slog.NewMultiHandler(slog.NewTextHandler(
-		logFile, &slog.HandlerOptions{AddSource: true}), // Logs to the log file, has added source
-		slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: replaceWithoutTimeLevel}), // Logs to the stdout, does not print the current time and log level
+	multiHandler := slog.NewMultiHandler(
+		slog.NewTextHandler(logFile, &slog.HandlerOptions{AddSource: true, Level: LevelFile}),                             // Logs to the log file, has added source
+		slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{ReplaceAttr: replaceWithoutTimeLevel, Level: slog.LevelInfo}), // Logs to the stdout, does not print the current time and log level
 	)
 	slog.SetDefault(slog.New(multiHandler))
 

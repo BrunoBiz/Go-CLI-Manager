@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	gameservermgr "example/Go-CLI-Manager/gameServerManager/gameServerMgr"
 	"example/Go-CLI-Manager/gameServerManager/logger"
 	"example/Go-CLI-Manager/gameServerManager/util"
@@ -17,8 +18,9 @@ func main() {
 	}
 
 	config, err := util.LoadConfig("/home/gameserver")
+	slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Loading config...")
 	if err != nil {
-		slog.Error("ERR - Cannot load from config: " + err.Error())
+		slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Could not load from config: "+err.Error())
 		return
 	}
 
@@ -26,7 +28,7 @@ func main() {
 		gameServer := gameservermgr.NewGameServer(config)
 		gameServer.OptionSwitch(os.Args[1], true)
 	} else {
-		slog.Error("Main -> empty os.Args")
+		slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Empty os.Args")
 		return
 	}
 }
