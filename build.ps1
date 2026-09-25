@@ -22,12 +22,12 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Deploy to server - env
-scp .\mgr.env root@[$deployIP]:/home/gameserver/mgr.env
+#scp .\mgr.env root@[$deployIP]:/home/gameserver/mgr.env
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Copy failed - \mgr.env"
-    exit 1
-}
+#if ($LASTEXITCODE -ne 0) {
+#    Write-Host "Copy failed - \mgr.env"
+#    exit 1
+#}
 
 # Deploy to server - mockServer
 scp .\mockServerTest root@[$deployIP]:/home/gameserver/mockServerTest

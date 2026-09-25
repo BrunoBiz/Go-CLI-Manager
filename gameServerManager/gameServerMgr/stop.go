@@ -68,7 +68,7 @@ func shutdownSequenceDefault(gameServer *GameServer) ReturnValue {
 		stopServerDetails = gameServer.OptionSwitch("details", false)
 		if !stopServerDetails.ServerOnline {
 			// Server stopped
-			fmt.Print("\n\n") // TODO - super ugly code
+			fmt.Print("\n\n")
 			break
 		}
 
@@ -77,7 +77,7 @@ func shutdownSequenceDefault(gameServer *GameServer) ReturnValue {
 			return newReturnValue("stop", "", "", false, false, "Server timed out", errors.New("Timeout"))
 		}
 
-		time.Sleep(time.Second) // TODO - might need to remove this
+		time.Sleep(time.Second)
 	}
 
 	return newReturnValue("stop", cmd.String(), string(tmuxStop), true, false, "Server stopped", nil)
@@ -153,7 +153,7 @@ func shutdownSequenceOne(gameServer *GameServer) ReturnValue {
 		stopServerDetails = gameServer.OptionSwitch("details", false)
 		if !stopServerDetails.ServerOnline {
 			// Server stopped
-			fmt.Print("\n\n") // TODO - super ugly code
+			fmt.Print("\n\n")
 			break
 		}
 

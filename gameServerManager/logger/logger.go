@@ -57,7 +57,7 @@ func LoadLogger() error {
 		}
 
 		if a.Key == slog.MessageKey && len(groups) == 0 {
-			return slog.Attr{Key: "", Value: a.Value} // TODO - Still prints the "" in the stdout
+			return slog.Attr{Key: "", Value: a.Value}
 		}
 
 		return a
@@ -73,7 +73,7 @@ func LoadLogger() error {
 }
 
 func checkDirectory() error {
-	cmd := exec.Command(`/bin/bash`, `-c`, `if [ ! -d Log ]; then mkdir 'Log' && echo 'Created'; else echo 'Already exists'; fi`) // TODO - There might be a better way to do this, but it works
+	cmd := exec.Command(`/bin/bash`, `-c`, `if [ ! -d Log ]; then mkdir 'Log' && echo 'Created'; else echo 'Already exists'; fi`)
 	checkDir, err := cmd.CombinedOutput()
 
 	slog.Debug("checkDirectory()")
