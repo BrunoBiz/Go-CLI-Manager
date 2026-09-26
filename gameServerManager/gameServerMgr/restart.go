@@ -7,7 +7,7 @@ import (
 )
 
 func (gameServer *GameServer) restart() ReturnValue {
-	slog.Log(context.Background(), logger.LevelFile, "[GSM Restart]")
+	slog.Log(context.Background(), logger.LevelFile, "[Narwhal Restart]")
 
 	// First checks if the server is running
 	returnDetails := gameServer.OptionSwitch("details", true)

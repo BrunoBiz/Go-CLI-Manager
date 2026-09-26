@@ -4,7 +4,7 @@ $env:GOARCH = "amd64"
 
 $deployIP = "192.168.18.190" # Edit this
 
-go build -C ./gameserverManager -o ../gameserver
+go build -C ./gameserverManager -o ../Narwhal
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Build failed."
@@ -12,15 +12,15 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Deploy to server - app
-scp .\gameserver gameserver@[$deployIP]:/home/gameserver/gameserver 
+scp .\Narwhal gameserver@[$deployIP]:/home/gameserver/Narwhal 
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Copy failed - .\gameserver"
+    Write-Host "Copy failed - .\Narwhal"
     exit 1
 }
 
 # CHMOD app
-ssh "gameserver@$deployIP" "chmod +x /home/gameserver/gameserver;"
+ssh "gameserver@$deployIP" "chmod +x /home/gameserver/Narwhal;"
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "SSH Failed - CHMOD."

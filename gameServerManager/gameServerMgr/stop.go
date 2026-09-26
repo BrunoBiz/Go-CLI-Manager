@@ -12,7 +12,7 @@ import (
 )
 
 func (gameServer *GameServer) stop() ReturnValue {
-	slog.Log(context.Background(), logger.LevelFile, "[GSM Stop]")
+	slog.Log(context.Background(), logger.LevelFile, "[Narwhal Stop]")
 
 	var returnStop ReturnValue
 
@@ -42,7 +42,7 @@ func shutdownSequenceDefault(gameServer *GameServer) ReturnValue {
 	var cmd *exec.Cmd
 	var tmuxStop []byte
 
-	slog.Log(context.Background(), logger.LevelFile, "[GSM Stop - Shutdown sequence 0]")
+	slog.Log(context.Background(), logger.LevelFile, "[Narwhal Stop - Shutdown sequence 0]")
 	cmd = exec.Command("tmux", "send-keys", "-t", gameServer.config.TMUXSessionName, "shutdown", "ENTER")
 	tmuxStop, err = cmd.CombinedOutput()
 
@@ -89,7 +89,7 @@ func shutdownSequenceOne(gameServer *GameServer) ReturnValue {
 	var cmd, cmdNCommand *exec.Cmd
 	var tmuxStop, tmuxCapturePane []byte
 
-	slog.Log(context.Background(), logger.LevelFile, "[GSM Stop - Shutdown sequence 1]")
+	slog.Log(context.Background(), logger.LevelFile, "[Narwhal Stop - Shutdown sequence 1]")
 	slog.Debug("Shutdown - Sequence 1")
 
 	/*

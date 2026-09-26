@@ -18,9 +18,9 @@ func main() {
 	}
 
 	config, err := util.LoadConfig("/home/gameserver")
-	slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Loading config...")
+	slog.Log(context.Background(), logger.LevelFile, "[Starting Narwhal] - Loading config...")
 	if err != nil {
-		slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Could not load from config: "+err.Error())
+		slog.Log(context.Background(), logger.LevelFile, "[Starting Narwhal] - Could not load from config: "+err.Error())
 		return
 	}
 
@@ -28,7 +28,7 @@ func main() {
 		gameServer := gameservermgr.NewGameServer(config)
 		gameServer.OptionSwitch(os.Args[1], true)
 	} else {
-		slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Empty os.Args")
+		slog.Log(context.Background(), logger.LevelFile, "[Starting Narwhal] - Empty os.Args")
 		return
 	}
 }

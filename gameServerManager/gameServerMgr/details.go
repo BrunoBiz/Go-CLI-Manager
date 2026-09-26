@@ -9,7 +9,7 @@ import (
 )
 
 func (gameServer *GameServer) details() ReturnValue {
-	slog.Log(context.Background(), logger.LevelFile, "[GSM Details]")
+	slog.Log(context.Background(), logger.LevelFile, "[Narwhal Details]")
 	/*
 		NOT a health check, this only validates that the TMUX session is active, the game may have crashed,
 		is frozen or an error may have ocurred and it will still return as ONLINE if the session is still on!

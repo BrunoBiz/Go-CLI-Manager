@@ -23,7 +23,7 @@ func NewGameServer(config util.Config) *GameServer {
 func (gameServer *GameServer) OptionSwitch(option string, printLogs bool) ReturnValue {
 	var returnSwitch ReturnValue
 
-	slog.Log(context.Background(), logger.LevelFile, "[Starting GSM] - Validade option - "+option)
+	slog.Log(context.Background(), logger.LevelFile, "[Starting Narwhal] - Validade option - "+option)
 
 	switch option {
 	case "start":

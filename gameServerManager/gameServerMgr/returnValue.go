@@ -19,7 +19,7 @@ type ReturnValue struct {
 }
 
 func (returnValue *ReturnValue) PrintLogs() {
-	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SUCCESS: " + strconv.FormatBool(returnValue.Success))
+	slog.Info("Narwhal - " + strings.ToUpper(returnValue.Option) + " - SUCCESS: " + strconv.FormatBool(returnValue.Success))
 	if returnValue.Option == "details" {
 		var serverStatus string
 		if returnValue.ServerOnline {
@@ -28,21 +28,21 @@ func (returnValue *ReturnValue) PrintLogs() {
 			serverStatus = "STOPPED"
 		}
 
-		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - SERVER STATUS: " + serverStatus)
+		slog.Info("Narwhal - " + strings.ToUpper(returnValue.Option) + " - SERVER STATUS: " + serverStatus)
 	}
 
 	if returnValue.ErrMsg != "" {
-		slog.Error("GSM - " + strings.ToUpper(returnValue.Option) + " - ERROR: " + returnValue.ErrMsg)
+		slog.Error("Narwhal - " + strings.ToUpper(returnValue.Option) + " - ERROR: " + returnValue.ErrMsg)
 	}
 
 	if returnValue.Command != "" {
-		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND: " + returnValue.Command)
+		slog.Info("Narwhal - " + strings.ToUpper(returnValue.Option) + " - COMMAND: " + returnValue.Command)
 	}
 
 	if returnValue.CommandResult != "" {
-		slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - COMMAND RESULT: " + returnValue.CommandResult)
+		slog.Info("Narwhal - " + strings.ToUpper(returnValue.Option) + " - COMMAND RESULT: " + returnValue.CommandResult)
 	}
-	slog.Info("GSM - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
+	slog.Info("Narwhal - " + strings.ToUpper(returnValue.Option) + " - MESSAGE: " + returnValue.Message)
 }
 
 func (returnValue *ReturnValue) PrintLogsJSON() {
