@@ -1,3 +1,5 @@
+# Used in dev - Also builds and deploys the mock server
+
 # Build for Linux
 $env:GOOS = "linux"
 $env:GOARCH = "amd64"
